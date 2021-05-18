@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import BooleanField
 from category.models import Category
 from django.urls import reverse
 # Create your models here.
@@ -22,3 +23,21 @@ class Product(models.Model):
   def get_url(self):
     return reverse('product_detail',args=[self.category.slug, self.slug])
     #adding name
+
+
+variation_cat_choice=(
+  ('color','color'),
+  ('size','size'),
+
+)
+
+
+class Variation(models.Model):
+  product=models.ForeignKey(Product,on_delete=models.CASCADE)
+  var_cat= models.CharField(max_length=70,choices=variation_cat_choice)
+  var_value= models.CharField(max_length=70)
+  is_active=models.BooleanField(default=True)
+  created_date= models.DateTimeField(auto_now_add=True)
+
+  def __str__(self):
+    return self.product.product_name
