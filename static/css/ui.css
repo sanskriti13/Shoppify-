@@ -1041,7 +1041,7 @@ a[class*=card]:hover .title {
   text-align: center;
 }
 .item-logo img {
-  max-height: 65px;
+  max-height: 90px;
 }
 
 .notify {
