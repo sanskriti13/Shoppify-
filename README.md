@@ -3,6 +3,8 @@
 Project Screenshots:
 
 <img width="819" alt="shop1" src="https://user-images.githubusercontent.com/63180433/119000815-105bdf00-b9a9-11eb-9ac2-edcbec7f1804.PNG">
+The Cart:
+
 <img width="820" alt="shop4" src="https://user-images.githubusercontent.com/63180433/119000810-0fc34880-b9a9-11eb-82ae-21888c682f11.PNG">
 
 
