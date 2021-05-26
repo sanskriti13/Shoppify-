@@ -12,7 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Variation)
 
 class VariationAdmin(admin.ModelAdmin):
-  list_display=['product','var_cat','var_value','is_active']
+  list_display=['id','product','var_cat','var_value','is_active']
   list_editable=['is_active',]
   list_filter=['product','var_cat','var_value','is_active']
 
