@@ -78,7 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Shoppify.wsgi.application'
-AUTH_USER_MODEL='accounts.Account'
+AUTH_USER_MODEL= 'accounts.Account'
 
 
 # Database
@@ -133,3 +133,17 @@ STATICFILES_DIRS = [STATIC_DIR]
 
 MEDIA_URL= '/media/'
 MEDIA_ROOT= 'media'
+
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS={
+    messages.ERROR: 'danger',
+}
+
+
+#SMTP Configuration
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_PORT= 587
+EMAIL_HOST_USER= 'mail@gmail.com'
+EMAIL_HOST_PASSWORD= 'password'
+EMAIL_USE_TLS= True
