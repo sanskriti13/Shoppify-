@@ -17,6 +17,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
 
+from carts.views import _cart_id, Cart,CartItem
+
+
+
 def register(request):
   if request.method =='POST':
     form=RegistrationForm(request.POST)
@@ -63,19 +67,68 @@ def register(request):
 def login(request):
   if request.method =='POST':
     email= request.POST['email']
-    print(email)
-    username= Account.objects.get(email=email)
     password= request.POST['password']
-    print(password)
+    print(email)
+    try:
+      user= Account.objects.get(email=email)
+    except:
+      messages.error(request,'Account not found, please signup')
+      return redirect('register')
+    
+    #print(password)
     x= auth.authenticate(request,email= email, password= password)
     print(x)
-    account= Account.objects.get(email=email)
+    
 
     if x is not None :
       print('There is a user ')
+      try:
+        cart=Cart.objects.get(cart_id=_cart_id(request))
+        is_cart_item_exists= CartItem.objects.filter(cart=cart).exists()
+
+        if is_cart_item_exists:
+          cart_item= CartItem.objects.filter(cart= cart)
+          product_variation=[]
+          for i in cart_item:
+            variation= i.variation.all()
+            product_variation.append(list(variation))
+
+          # Get the cart items from the user to access their product variations
+
+
+          item= CartItem.objects.filter(user= x)
+          ex_var_list=[]
+          id=[]
+          for i in item:
+            existing_variation= i.variation.all()
+            ex_var_list.append(list(existing_variation))
+            id.append(i.id)
+          # we need to find the common product ids and thyen find the common product variations.
+          for p in product_variation:
+            if p in ex_var_list:
+              index=ex_var_list.index(p)
+              item_id= id[index]
+              item= CartItem.objects.get(id=item_id)
+              item.quantity+=1
+              item.user=x
+              item.save()
+            else:
+              cart_item= CartItem.objects.filter(cart=cart)
+          #Assigning user to the cart item.
+              for i in cart_item:
+                i.user= user
+                i.save()
+
+      except:
+        pass
       auth.login(request, x)
       messages.success(request,"You have successfully logged in! ")
+      # Will store the previous url from where you came
+      # This is singular request
+     
       return redirect('dashboard')
+      
+      
     else:
       messages.error(request,'Invalid Login Credentials')
       return redirect('login')
